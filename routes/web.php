@@ -10,13 +10,15 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/pagamento', [VendaController::class, 'paymentIndex'])->name('pagamento.index');
+
 Route::get('/vendas', [VendaController::class, 'index'])->name('vendas.index');
 
 Route::get('/vendas/create', [VendaController::class, 'create'])->name('vendas.create');
 
-Route::post('/vendas/store', [VendaController::class, 'store'])->name('vendas.store');
+Route::post('/vendas/store', [VendaController::class, 'store']);
 
-Route::post('/vendas/{id}', [VendaController::class, 'destroy'])->name('vendas.destroy');
+Route::delete('/vendas/{id}', [VendaController::class, 'destroy']);
 
 Route::get('/clientes/create', [ClienteController::class, 'create'])->name('clientes.create');
 

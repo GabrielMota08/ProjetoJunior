@@ -27,7 +27,7 @@
         <div class="card-body">
           <h2 class="card-title"><i class="fas fa-shopping-cart"></i> Vendas</h2>
           <p class="mt-4">
-            <a href="{{ route('vendas.create') }}" class="btn btn-light text-success w-100">Cadastrar venda</a>
+            <a href="{{ route('vendas.create') }}" class="btn btn-light text-success w-100">Registrar venda</a>
           </p>
           <p class="mt-3">
             <a href="{{ route('vendas.index') }}" class="btn btn-light text-success w-100">Ver vendas</a>
@@ -48,11 +48,11 @@
     </div>
 
     <div class="col-md-4">
-      <div class="card text-white bg-danger h-100">
+      <div class="card text-white bg-secondary h-100">
         <div class="card-body">
           <h2 class="card-title"><i class="fas fa-tag"></i> Item</h2>
           <p class="mt-4">
-            <a href="{{ route('items.create') }}" class="btn btn-light text-danger w-100">Cadastrar item</a>
+            <a href="{{ route('items.create') }}" class="btn btn-light text-secondary w-100">Cadastrar item</a>
           </p>
         </div>
       </div>

@@ -11,11 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('vendas', function (Blueprint $table) {
+        Schema::create('parcelas', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('cliente_id')->constrained('clientes')->onDelete('cascade');
-            $table->date('data')->default(DB::raw('CURRENT_DATE'));
-            $table->decimal('valor_total', 10, 2)->default(0);
+            $table->foreignId('venda_id')->constrained('vendas')->onDelete('cascade');
+            $table->integer('numero');
+            $table->date('data_vencimento');
+            $table->decimal('valor', 10, 2);
+            $table->boolean('paga')->default(false);
             $table->timestamps();
         });
     }
@@ -25,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('vendas');
+         Schema::dropIfExists('parcelas');
     }
 };

@@ -14,7 +14,7 @@
             </div>
             <div class="form-group mt-2">
                 <label for="title">Valor:</label>
-                    <input type="number" class="form-control" id="valor" name="valor" step="0.01" placeholder="Valor do item">
+                <input type="number" class="form-control" id="valor" name="valor" step="0.01" placeholder="Valor do item">
             </div>
             <input type="submit" class="btn btn-primary mt-4" value="Cadastrar Item">
         </form>

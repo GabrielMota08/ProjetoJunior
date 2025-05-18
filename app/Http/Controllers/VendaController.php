@@ -6,12 +6,17 @@ use Illuminate\Http\Request;
 use App\Models\Venda;
 use App\Models\Cliente;
 use App\Models\Item;
+use App\Models\Parcela;
+use App\Models\ItemVenda;
 
 class VendaController extends Controller
 {
     public function index(){
 
-        $vendas = Venda::all();
+        $vendas = Venda::with(['cliente', 'items', 'parcelas'])
+                    ->orderBy('data', 'desc')
+                    ->paginate(50);
+
         return view('vendas.index', compact('vendas'));
     }
 
@@ -27,28 +32,65 @@ class VendaController extends Controller
         return view('vendas.create', compact('clientes', 'items', 'cliente_selecionado'));
     }
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
+        $itens = json_decode($request->itens_adicionados, true);
+        $parcelas = json_decode($request->parcelas, true);
 
-        $venda = new Venda;
+        $valor_total = 0;
+        foreach ($itens as $item) {
+            $valor_total += $item['valor'] * $item['quantidade'];
+        }
 
+        $venda = new Venda();
         $venda->cliente_id = $request->cliente_id;
-        $venda->valor_total = $request->valor_total;
-
+        $venda->valor_total = $valor_total;
+        $venda->data = now();
         $venda->save();
 
-        $items = json_decode($request->input('items'[0], true));
-        $itemsIds = [];
-
-        foreach($items as $i){
-            $item = Item::where(['nome' => $i['value']]);
-            $itemsIds[] = $item->id;
+        foreach ($itens as $item) {
+            ItemVenda::create([
+                'venda_id' => $venda->id,
+                'item_id' => $item['id'],
+                'quantidade' => $item['quantidade'],
+                'preco_unitario' => $item['valor'],
+            ]);
         }
-        $venda->items()->attach($itemsIds);
 
-        return redirect('/')->with("msg", "Venda registrada com sucesso");
+        foreach ($parcelas as $index => $parcela) {
+            $dataVencimento = \Carbon\Carbon::now()->startOfMonth()->addMonths($index)->day($parcela['dia']);
+
+            Parcela::create([
+                'venda_id' => $venda->id,
+                'numero' => $index + 1,
+                'valor' => $parcela['valor'],
+                'data_vencimento' => $dataVencimento,
+            ]);
+        }
+
+        return redirect('/')->with('msg', 'Venda registrada com sucesso!');
     }
 
-    public function destroy(){
+    public function paymentIndex(Request $request){       
+
+        $itens = json_decode($request ->itens_adicionados, true);
+        $cliente_id = $request->cliente_id;
+
+        $valor_total = 0;
+        foreach($itens as $item){
+            $valor_total += $item['valor'] * $item['quantidade'];
+        }
+
+        $cliente = Cliente::find($cliente_id);
+
+        return view('pagamento.index', compact('itens', 'cliente', 'valor_total'));
+
+    }
+
+    public function destroy($venda_id){
+
+        Venda::destroy($venda_id);
+        return redirect('/vendas')->with('msg', 'Projeto excluído com suceso!');
 
     }
 }

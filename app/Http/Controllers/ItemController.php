@@ -20,6 +20,6 @@ class ItemController extends Controller
         
         $item->save();
 
-        return redirect('/')->with("msg", "Item cadastrado com sucesso");;
+        return redirect('/')->with("msg", "Item cadastrado com sucesso");
     }
 }

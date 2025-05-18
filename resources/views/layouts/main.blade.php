@@ -22,7 +22,7 @@
 <body>
     <nav>
         <ul>
-            <li style="cursor: default; padding-right: 3em; font-size: 20px"><strong>Projeto</strong></li>
+            <li style="cursor: default; padding-right: 3em; font-size: 20px"><strong><a href="/">Projeto</a></strong></li>
             <li>
                 Vendas
                 <ul>

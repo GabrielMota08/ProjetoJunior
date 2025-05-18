@@ -1,0 +1,5 @@
+abrir o cmd como administrador e rodar net start mysql80
+
+USAR O COMMAND LINE CLIENT 8.0 MYSQL COM A SENHA 123456
+É NECESSÁRIO O BANCO DE DADOS JÁ ESTAR CRIADO projetoJunior
+Preciso rodar php artisan migrate para criar as tabelas
